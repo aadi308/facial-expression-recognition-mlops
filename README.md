@@ -23,8 +23,14 @@ Browser webcam/photo -> CloudFront -> ALB -> FastAPI on EKS -> prediction
                              CloudWatch -> SNS email
 ```
 
-This is a learning and portfolio POC, not a claim that facial-expression
-classification is production-ready for sensitive or high-stakes use.
+This is a technical POC, not a claim that facial-expression classification is
+production-ready for sensitive or high-stakes use.
+
+## Documentation
+
+- [System architecture](docs/architecture.md)
+- [Model card](docs/model-card.md)
+- [Terraform deployment and teardown](infra/terraform/README.md)
 
 ## Quick start
 
@@ -194,8 +200,7 @@ and training metadata remains in `models/emotion_cnn_model.metadata.json`.
 5. Place it locally at `models/emotion_cnn_model.keras`.
 
 Model files are not committed to Git. The current model and metadata are also
-stored as a versioned release in the private S3 artifact bucket; MLflow is a
-later phase of this learning roadmap.
+stored as a versioned release in the private S3 artifact bucket.
 
 ## Local setup
 
@@ -531,5 +536,4 @@ The suite tests image preprocessing, evaluation calculations, the model
 contract, prediction output, API behavior, and loading a real Keras artifact. If
 `models/emotion_cnn_model.keras` is present, it also validates the exported
 model.
-
 
