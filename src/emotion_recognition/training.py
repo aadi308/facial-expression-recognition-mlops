@@ -279,6 +279,30 @@ def calculate_class_weights(labels: np.ndarray) -> Dict[int, float]:
     }
 
 
+def calculate_frequency_class_weights(
+    labels: np.ndarray, exponent: float = 0.5
+) -> Dict[int, float]:
+    """Return frequency-based weights while keeping mean sample weight at one.
+
+    An exponent of 0 disables reweighting, 0.5 applies square-root weighting,
+    and 1 applies full inverse-frequency weighting. Intermediate values make it
+    possible to tune the majority/minority tradeoff without changing the data.
+    """
+
+    if not 0.0 <= exponent <= 1.0:
+        raise ValueError("class-weight exponent must be between 0 and 1")
+    counts = np.bincount(labels, minlength=len(CLASS_NAMES)).astype(np.float64)
+    if np.any(counts == 0):
+        raise ValueError("Training split must contain every class")
+
+    raw_weights = np.power(counts, -exponent)
+    sample_weight_mean = float(np.average(raw_weights, weights=counts))
+    normalized_weights = raw_weights / sample_weight_mean
+    return {
+        index: float(weight) for index, weight in enumerate(normalized_weights)
+    }
+
+
 def calculate_metrics(
     actual: np.ndarray, predicted: np.ndarray
 ) -> Tuple[float, float, List[List[int]], Dict[str, Mapping[str, float]]]:
@@ -336,6 +360,8 @@ def train(
     batch_size: int,
     seed: int,
     samples_per_class: int,
+    balance_strategy: str = "class-weight",
+    class_weight_power: float = 0.5,
 ) -> Mapping[str, object]:
     import tensorflow as tf
 
@@ -361,17 +387,31 @@ def train(
     }
     print(json.dumps({"splits": split_summaries}, indent=2))
 
-    balanced_training_records = balance_training_records(
-        splits["train"], samples_per_class=samples_per_class, seed=seed
-    )
-    x_train, y_train = load_images(balanced_training_records)
+    if balance_strategy == "oversample":
+        training_records = balance_training_records(
+            splits["train"], samples_per_class=samples_per_class, seed=seed
+        )
+    elif balance_strategy == "class-weight":
+        training_records = splits["train"]
+    else:
+        raise ValueError(f"Unsupported balance strategy: {balance_strategy}")
+
+    x_train, y_train = load_images(training_records)
     x_validation, y_validation = load_images(splits["validation"])
     x_test, y_test = load_images(splits["test"])
-    validation_class_weights = calculate_class_weights(y_validation)
-    validation_sample_weights = np.asarray(
-        [validation_class_weights[int(label)] for label in y_validation],
-        dtype=np.float32,
-    )
+    class_weights = None
+    if balance_strategy == "oversample":
+        validation_class_weights = calculate_class_weights(y_validation)
+        validation_sample_weights = np.asarray(
+            [validation_class_weights[int(label)] for label in y_validation],
+            dtype=np.float32,
+        )
+        validation_data = (x_validation, y_validation, validation_sample_weights)
+    else:
+        class_weights = calculate_frequency_class_weights(
+            y_train, exponent=class_weight_power
+        )
+        validation_data = (x_validation, y_validation)
 
     model = build_model(seed=seed)
     model.summary()
@@ -386,10 +426,11 @@ def train(
     history = model.fit(
         x_train,
         y_train,
-        validation_data=(x_validation, y_validation, validation_sample_weights),
+        validation_data=validation_data,
         epochs=max_epochs,
         batch_size=batch_size,
         callbacks=callbacks,
+        class_weight=class_weights,
         verbose=2,
     )
 
@@ -419,7 +460,15 @@ def train(
         "training": {
             "seed": seed,
             "batch_size": batch_size,
-            "balanced_samples_per_class": samples_per_class,
+            "balance_strategy": balance_strategy,
+            "balanced_samples_per_class": (
+                samples_per_class if balance_strategy == "oversample" else None
+            ),
+            "training_images_after_sampling": len(training_records),
+            "class_weights": class_weights,
+            "class_weight_power": (
+                class_weight_power if balance_strategy == "class-weight" else None
+            ),
             "requested_epochs": max_epochs,
             "completed_epochs": len(history.history["loss"]),
             "splits": split_summaries,
@@ -468,6 +517,21 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-epochs", type=int, default=30)
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--samples-per-class", type=int, default=300)
+    parser.add_argument(
+        "--balance-strategy",
+        choices=("oversample", "class-weight"),
+        default="class-weight",
+        help=(
+            "oversample repeats every class equally; class-weight trains on "
+            "original records with frequency-based weighting"
+        ),
+    )
+    parser.add_argument(
+        "--class-weight-power",
+        type=float,
+        default=0.5,
+        help="Class-frequency weighting strength from 0 (none) to 1 (inverse)",
+    )
     parser.add_argument("--seed", type=int, default=42)
     return parser
 
@@ -483,6 +547,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         batch_size=args.batch_size,
         seed=args.seed,
         samples_per_class=args.samples_per_class,
+        balance_strategy=args.balance_strategy,
+        class_weight_power=args.class_weight_power,
     )
     return 0
 

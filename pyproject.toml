@@ -37,6 +37,7 @@ emotion-api = "emotion_recognition.api_cli:main"
 emotion-evaluate = "emotion_recognition.evaluation:main"
 emotion-predict = "emotion_recognition.cli:main"
 emotion-photo = "emotion_recognition.photo_cli:main"
+emotion-select-model = "emotion_recognition.model_selection:main"
 emotion-train = "emotion_recognition.training:main"
 emotion-webcam = "emotion_recognition.webcam_cli:main"
 
