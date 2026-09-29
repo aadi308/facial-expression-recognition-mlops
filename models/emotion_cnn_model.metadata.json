@@ -1,0 +1,231 @@
+{
+  "created_at_utc": "2026-08-21T21:33:37.645656+00:00",
+  "dataset": {
+    "archive": "CK+.zip",
+    "archive_sha256": "7b271b0a5e7ffa0c4b5c06fc2df232609d680040f84fdc61fd2528f3203a1e95",
+    "images": 920,
+    "subjects": 123
+  },
+  "model": {
+    "path": "models/emotion_cnn_model.keras",
+    "sha256": "9c8d773993e54ad78e7369ec5837890a8115933d288d4164eae370e9f0fbdb9b",
+    "input_shape": [
+      100,
+      100,
+      1
+    ],
+    "class_names": [
+      "Neutral",
+      "Anger",
+      "Contempt",
+      "Disgust",
+      "Fear",
+      "Happy",
+      "Sadness",
+      "Surprise"
+    ],
+    "parameters": 2453128
+  },
+  "training": {
+    "seed": 42,
+    "batch_size": 32,
+    "balanced_samples_per_class": 300,
+    "requested_epochs": 30,
+    "completed_epochs": 12,
+    "splits": {
+      "train": {
+        "images": 738,
+        "subjects": 98,
+        "class_counts": {
+          "Neutral": 476,
+          "Anger": 36,
+          "Contempt": 14,
+          "Disgust": 46,
+          "Fear": 20,
+          "Happy": 55,
+          "Sadness": 22,
+          "Surprise": 69
+        }
+      },
+      "validation": {
+        "images": 90,
+        "subjects": 12,
+        "class_counts": {
+          "Neutral": 59,
+          "Anger": 4,
+          "Contempt": 2,
+          "Disgust": 7,
+          "Fear": 3,
+          "Happy": 7,
+          "Sadness": 3,
+          "Surprise": 5
+        }
+      },
+      "test": {
+        "images": 92,
+        "subjects": 13,
+        "class_counts": {
+          "Neutral": 58,
+          "Anger": 5,
+          "Contempt": 2,
+          "Disgust": 6,
+          "Fear": 2,
+          "Happy": 7,
+          "Sadness": 3,
+          "Surprise": 9
+        }
+      }
+    },
+    "preprocessing": {
+      "face_detector": "haarcascade_frontalface_default.xml",
+      "face_margin_fraction": 0.1,
+      "grayscale": true,
+      "resize": [
+        100,
+        100
+      ],
+      "pixel_scaling": "divide_by_255"
+    }
+  },
+  "evaluation": {
+    "test_accuracy": 0.6630434782608695,
+    "test_macro_f1": 0.5671819742042854,
+    "confusion_matrix": [
+      [
+        34,
+        9,
+        2,
+        0,
+        8,
+        0,
+        3,
+        2
+      ],
+      [
+        0,
+        4,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        6,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        2,
+        4,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        9
+      ]
+    ],
+    "per_class": {
+      "Neutral": {
+        "precision": 1.0,
+        "recall": 0.5862068965517241,
+        "f1": 0.7391304347826086,
+        "support": 58
+      },
+      "Anger": {
+        "precision": 0.2857142857142857,
+        "recall": 0.8,
+        "f1": 0.4210526315789473,
+        "support": 5
+      },
+      "Contempt": {
+        "precision": 0.3333333333333333,
+        "recall": 1.0,
+        "f1": 0.5,
+        "support": 2
+      },
+      "Disgust": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 6
+      },
+      "Fear": {
+        "precision": 0.14285714285714285,
+        "recall": 1.0,
+        "f1": 0.25,
+        "support": 2
+      },
+      "Happy": {
+        "precision": 1.0,
+        "recall": 0.5714285714285714,
+        "f1": 0.7272727272727273,
+        "support": 7
+      },
+      "Sadness": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 3
+      },
+      "Surprise": {
+        "precision": 0.8181818181818182,
+        "recall": 1.0,
+        "f1": 0.9,
+        "support": 9
+      }
+    }
+  },
+  "environment": {
+    "tensorflow": "2.20.0",
+    "numpy": "2.0.2",
+    "opencv": "4.14.0"
+  }
+}

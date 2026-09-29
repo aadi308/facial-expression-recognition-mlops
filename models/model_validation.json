@@ -1,0 +1,229 @@
+{
+  "created_at_utc": "2026-09-23T20:13:26.685372+00:00",
+  "artifact": {
+    "model_path": "models/emotion_cnn_model.keras",
+    "model_sha256": "9c8d773993e54ad78e7369ec5837890a8115933d288d4164eae370e9f0fbdb9b",
+    "input_shape": [
+      null,
+      100,
+      100,
+      1
+    ],
+    "output_shape": [
+      null,
+      8
+    ],
+    "parameters": 2453128,
+    "dataset_archive_sha256": "7b271b0a5e7ffa0c4b5c06fc2df232609d680040f84fdc61fd2528f3203a1e95"
+  },
+  "dataset": {
+    "images": 920,
+    "subjects": 123,
+    "splits": {
+      "train": {
+        "images": 738,
+        "subjects": 98,
+        "class_counts": {
+          "Neutral": 476,
+          "Anger": 36,
+          "Contempt": 14,
+          "Disgust": 46,
+          "Fear": 20,
+          "Happy": 55,
+          "Sadness": 22,
+          "Surprise": 69
+        }
+      },
+      "validation": {
+        "images": 90,
+        "subjects": 12,
+        "class_counts": {
+          "Neutral": 59,
+          "Anger": 4,
+          "Contempt": 2,
+          "Disgust": 7,
+          "Fear": 3,
+          "Happy": 7,
+          "Sadness": 3,
+          "Surprise": 5
+        }
+      },
+      "test": {
+        "images": 92,
+        "subjects": 13,
+        "class_counts": {
+          "Neutral": 58,
+          "Anger": 5,
+          "Contempt": 2,
+          "Disgust": 6,
+          "Fear": 2,
+          "Happy": 7,
+          "Sadness": 3,
+          "Surprise": 9
+        }
+      }
+    },
+    "subject_overlap": {
+      "train_validation": 0,
+      "train_test": 0,
+      "validation_test": 0
+    }
+  },
+  "evaluation": {
+    "accuracy": 0.6630434782608695,
+    "majority_class_baseline_accuracy": 0.6304347826086957,
+    "macro_f1": 0.5671819742042854,
+    "balanced_accuracy": 0.7447044334975369,
+    "top_2_accuracy": 0.8586956521739131,
+    "expected_calibration_error_10_bins": 0.12778947372799335,
+    "mean_confidence": 0.7853329917011054,
+    "mean_confidence_correct": 0.8426110290113042,
+    "mean_confidence_incorrect": 0.6726245957036172,
+    "subject_bootstrap": {
+      "accuracy_95_percent": [
+        0.5,
+        0.818205996131528
+      ],
+      "macro_f1_95_percent": [
+        0.456816681959345,
+        0.6860837279443924
+      ]
+    },
+    "confusion_matrix": [
+      [
+        34,
+        9,
+        2,
+        0,
+        8,
+        0,
+        3,
+        2
+      ],
+      [
+        0,
+        4,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        6,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        2,
+        4,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        9
+      ]
+    ],
+    "per_class": {
+      "Neutral": {
+        "precision": 1.0,
+        "recall": 0.5862068965517241,
+        "f1": 0.7391304347826086,
+        "support": 58
+      },
+      "Anger": {
+        "precision": 0.2857142857142857,
+        "recall": 0.8,
+        "f1": 0.4210526315789473,
+        "support": 5
+      },
+      "Contempt": {
+        "precision": 0.3333333333333333,
+        "recall": 1.0,
+        "f1": 0.5,
+        "support": 2
+      },
+      "Disgust": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 6
+      },
+      "Fear": {
+        "precision": 0.14285714285714285,
+        "recall": 1.0,
+        "f1": 0.25,
+        "support": 2
+      },
+      "Happy": {
+        "precision": 1.0,
+        "recall": 0.5714285714285714,
+        "f1": 0.7272727272727273,
+        "support": 7
+      },
+      "Sadness": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 3
+      },
+      "Surprise": {
+        "precision": 0.8181818181818182,
+        "recall": 1.0,
+        "f1": 0.9,
+        "support": 9
+      }
+    }
+  },
+  "environment": {
+    "tensorflow": "2.20.0",
+    "numpy": "2.0.2"
+  }
+}

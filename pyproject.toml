@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "facial-emotion-recognition"
+version = "0.3.1"
+description = "End-to-end MLOps POC for an eight-class facial-expression CNN."
+readme = "README.md"
+requires-python = ">=3.9,<3.13"
+dependencies = [
+    "numpy>=1.26,<3",
+    "opencv-python>=4.10,<5",
+    "tensorflow>=2.16,<2.21",
+]
+
+[project.optional-dependencies]
+api = [
+    "fastapi>=0.115,<1",
+    "prometheus-client>=0.24,<1",
+    "python-multipart>=0.0.20,<1",
+    "uvicorn[standard]>=0.30,<1",
+]
+training = [
+    "matplotlib>=3.8,<4",
+    "pandas>=2.0,<3",
+    "scikit-learn>=1.4,<2",
+    "seaborn>=0.13,<1",
+]
+dev = [
+    "httpx>=0.27,<1",
+    "pytest>=8,<9",
+]
+
+[project.scripts]
+emotion-api = "emotion_recognition.api_cli:main"
+emotion-evaluate = "emotion_recognition.evaluation:main"
+emotion-predict = "emotion_recognition.cli:main"
+emotion-photo = "emotion_recognition.photo_cli:main"
+emotion-train = "emotion_recognition.training:main"
+emotion-webcam = "emotion_recognition.webcam_cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+emotion_recognition = ["static/*"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+pythonpath = ["src"]
+testpaths = ["tests"]

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Real-time facial expression recognition demo">
+    <title>Emotion Lens</title>
+    <link rel="stylesheet" href="/static/app.css">
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">TensorFlow · FastAPI · Amazon EKS</p>
+          <h1>Emotion Lens</h1>
+          <p class="intro">
+            Use a webcam frame or upload a photo to classify the visible
+            facial expression with the deployed CNN model.
+          </p>
+        </div>
+        <a class="api-link" href="/docs">API docs</a>
+      </header>
+
+      <section class="workspace" aria-label="Webcam and photo expression recognition">
+        <div class="camera-card">
+          <div class="camera-stage" id="camera-stage">
+            <video id="camera" autoplay muted playsinline></video>
+            <img id="image-preview" alt="Uploaded image preview" hidden>
+            <canvas id="overlay" aria-hidden="true"></canvas>
+            <div class="camera-placeholder" id="camera-placeholder">
+              <span class="camera-icon" aria-hidden="true">◉</span>
+              <p>Choose an input</p>
+              <small>Start the camera or upload a photo</small>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button class="button primary" id="camera-button" type="button">
+              Start camera
+            </button>
+            <button class="button" id="analyze-button" type="button" disabled>
+              Analyze frame
+            </button>
+            <button class="button" id="live-button" type="button" disabled>
+              Start live mode
+            </button>
+            <label class="button upload-button" for="image-input">
+              Upload image
+            </label>
+            <input
+              id="image-input"
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/bmp"
+              hidden
+            >
+          </div>
+
+          <p class="status" id="status" role="status" aria-live="polite">
+            Ready. Camera access stays in your browser until you start a prediction.
+          </p>
+        </div>
+
+        <aside class="result-card" aria-live="polite">
+          <p class="result-label">Detected expression</p>
+          <p class="emotion" id="emotion">—</p>
+          <dl class="metrics">
+            <div>
+              <dt>Confidence</dt>
+              <dd id="confidence">—</dd>
+            </div>
+            <div>
+              <dt>Inference</dt>
+              <dd id="inference-time">—</dd>
+            </div>
+            <div>
+              <dt>Faces</dt>
+              <dd id="face-count">—</dd>
+            </div>
+          </dl>
+          <div class="confidence-track" aria-hidden="true">
+            <span id="confidence-bar"></span>
+          </div>
+          <p class="disclaimer">
+            This model classifies visible expressions. It cannot determine a
+            person's internal emotional state.
+          </p>
+        </aside>
+      </section>
+
+      <canvas id="capture" hidden></canvas>
+    </main>
+  </body>
+</html>
