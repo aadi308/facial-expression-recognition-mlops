@@ -37,16 +37,16 @@ docker version
 ```
 
 The checked-in backend files, IAM policies, bucket names, and default ECR image
-refer to the portfolio owner's AWS account. If you fork this repository, replace
-account ID `619759452242`, choose globally unique S3 bucket names, and use your
-own AWS CLI profile before applying. AWS account IDs are identifiers, not
-credentials; never commit access keys or secret keys.
+refer to the original deployment's AWS account. Before using another account,
+replace account ID `619759452242`, choose globally unique S3 bucket names, and
+configure the appropriate AWS CLI profile. AWS account IDs are identifiers,
+not credentials; never commit access keys or secret keys.
 
 ## Layout
 
 - `modules/`: reusable infrastructure components.
 - `bootstrap/`: encrypted and versioned S3 storage for Terraform state.
-- `environments/poc/`: the low-cost learning environment in `us-east-2`.
+- `environments/poc/`: the short-lived POC environment in `us-east-2`.
 - `environments/poc-platform/`: the Kubernetes application, AWS Load Balancer
   Controller, public ALB, CloudFront HTTPS endpoint, CloudWatch monitoring,
   and SNS alert subscriptions.
