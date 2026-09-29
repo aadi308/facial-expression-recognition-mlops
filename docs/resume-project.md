@@ -32,10 +32,11 @@ Docker, Terraform, AWS
 - **Why subject-disjoint splitting matters:** adjacent CK+ frames from one
   person are very similar. Splitting by image can leak a person's appearance
   into the test set and inflate accuracy.
-- **What the model result means:** held-out accuracy is `66.3%` and macro-F1 is
-  `56.7%`. This is a valid baseline on a small, imbalanced dataset, not a
-  production-grade emotion detector. The engineering workflow is the main
-  portfolio result.
+- **What the model result means:** the selected class-weighted model reached
+  `85.9%` held-out accuracy and `61.6%` macro-F1. The small, imbalanced test set
+  still produced `0%` recall for fear and sadness, so this is not a
+  production-grade emotion detector. The engineering workflow and honest
+  evaluation are the main portfolio results.
 - **Why CloudFront is present:** browsers require a secure context for webcam
   access. CloudFront provides HTTPS while the short-lived POC uses an ALB
   origin.

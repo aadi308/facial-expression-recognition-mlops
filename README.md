@@ -149,28 +149,30 @@ and writes `models/model_validation.json`.
 
 ### Current validation result
 
-The current artifact was evaluated on 92 images from 13 subjects that were not
-used for training or validation:
+The current artifact uses square-root class weighting selected through
+three-fold, subject-grouped cross-validation. It was evaluated once on 92
+images from 13 subjects that were not used for training, validation, or model
+selection:
 
-- Accuracy: `66.3%`
-- Macro-F1: `56.7%`
-- Balanced accuracy: `74.5%`
-- Top-2 accuracy: `85.9%`
+- Accuracy: `85.9%`
+- Macro-F1: `61.6%`
+- Balanced accuracy: `61.1%`
+- Top-2 accuracy: `94.6%`
 - Majority-class baseline: `63.0%`
-- Subject-bootstrap 95% accuracy interval: `50.0%–81.8%`
+- Subject-bootstrap 95% accuracy interval: `76.0%–94.6%`
 
-The model and training workflow are technically valid, but the result is not
-strong enough to call the classifier production-grade. Accuracy is only 3.3
-percentage points above the majority baseline, the test set has just 13
-subjects, and sadness recall is `0%` on three examples. The wide bootstrap
-interval also shows that the estimate is uncertain. These metrics are more
-honest than the original notebook result because no person's images appear in
-more than one split and augmented images are confined to training.
+The result is a substantial improvement over the original baseline, but the
+classifier is still not production-grade. The test set has just 13 subjects;
+fear recall is `0%` on two examples and sadness recall is `0%` on three. The
+confidence interval also shows uncertainty from the small dataset. These
+metrics are more honest than the original notebook result because no person's
+images appear in more than one split and model selection used only development
+subjects.
 
 See `models/model_validation.json` for the confusion matrix, per-class
 metrics, calibration result, hashes, environment versions, and exact split
-counts. Training metadata remains in
-`models/emotion_cnn_model.metadata.json`.
+counts. The cross-validation comparison is in `models/model_selection.json`,
+and training metadata remains in `models/emotion_cnn_model.metadata.json`.
 
 ## Legacy Colab workflow
 
@@ -530,21 +532,4 @@ contract, prediction output, API behavior, and loading a real Keras artifact. If
 `models/emotion_cnn_model.keras` is present, it also validates the exported
 model.
 
-## Known limitations
 
-- Haar cascades are lightweight but less accurate than modern neural face
-  detectors, especially for rotated, distant, or partially covered faces.
-- Facial-expression classes describe visible expressions; they should not be
-  treated as reliable measurements of a person's internal emotional state.
-- The legacy notebook augments data before splitting, so its metrics should not
-  be compared directly with the subject-independent local training result.
-- The public POC endpoint has no user authentication or rate limiting. Keep it
-  online only for a short demo and do not submit sensitive photos.
-- The API is deployed to EKS and model `v1` is stored in S3, but the current
-  Kubernetes baseline still loads the model embedded in the image.
-- CloudWatch covers endpoint availability, errors, traffic, and latency. The
-  API exposes live class-distribution and confidence metrics, but historical
-  collection, model-drift detection, data-quality monitoring, and centralized
-  application logs are not deployed yet.
-- There is one Spot worker and one API replica, with no autoscaling. That keeps
-  the demo inexpensive but is not a highly available production design.

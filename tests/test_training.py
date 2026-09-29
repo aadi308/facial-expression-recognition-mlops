@@ -4,10 +4,12 @@ import numpy as np
 import pytest
 
 from emotion_recognition.config import CLASS_NAMES
+from emotion_recognition.model_selection import validate_weight_powers
 from emotion_recognition.training import (
     ImageRecord,
     balance_training_records,
     calculate_metrics,
+    calculate_frequency_class_weights,
     split_records_by_subject,
 )
 
@@ -69,3 +71,59 @@ def test_subject_split_rejects_invalid_fractions():
         split_records_by_subject(
             make_records(), train_fraction=0.8, validation_fraction=0.2
         )
+
+
+def test_frequency_class_weights_moderately_weight_rare_classes():
+    labels = np.asarray(
+        [0] * 64
+        + [1] * 16
+        + [2] * 4
+        + [3] * 4
+        + [4] * 4
+        + [5] * 4
+        + [6] * 4
+        + [7] * 4
+    )
+
+    weights = calculate_frequency_class_weights(labels, exponent=0.5)
+
+    assert weights[2] > weights[1] > weights[0]
+    sample_weights = np.asarray([weights[int(label)] for label in labels])
+    assert sample_weights.mean() == pytest.approx(1.0)
+
+
+def test_class_weight_power_controls_minority_emphasis():
+    labels = np.asarray(
+        [0] * 64
+        + [1] * 16
+        + [2] * 4
+        + [3] * 4
+        + [4] * 4
+        + [5] * 4
+        + [6] * 4
+        + [7] * 4
+    )
+
+    moderate = calculate_frequency_class_weights(labels, exponent=0.5)
+    stronger = calculate_frequency_class_weights(labels, exponent=0.75)
+
+    assert stronger[2] / stronger[0] > moderate[2] / moderate[0]
+    with pytest.raises(ValueError, match="between 0 and 1"):
+        calculate_frequency_class_weights(labels, exponent=1.1)
+
+
+def test_training_cli_defaults_to_selected_class_weight_strategy():
+    from emotion_recognition.training import build_parser
+
+    args = build_parser().parse_args([])
+
+    assert args.balance_strategy == "class-weight"
+    assert args.class_weight_power == pytest.approx(0.5)
+
+
+def test_model_selection_weight_powers_must_be_valid_and_unique():
+    assert validate_weight_powers([0.5, 0.625, 0.75]) == [0.5, 0.625, 0.75]
+    with pytest.raises(ValueError, match="unique"):
+        validate_weight_powers([0.5, 0.5])
+    with pytest.raises(ValueError, match="between 0 and 1"):
+        validate_weight_powers([-0.1])
