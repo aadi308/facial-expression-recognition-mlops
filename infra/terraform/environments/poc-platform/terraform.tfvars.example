@@ -1,0 +1,3 @@
+# Copy this file to terraform.tfvars to enable email notifications. The local
+# terraform.tfvars file is ignored by Git.
+alert_email = "you@example.com"

@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ManageProjectCloudWatchAlarms",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteAlarms",
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:ListTagsForResource",
+        "cloudwatch:PutMetricAlarm",
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource"
+      ],
+      "Resource": "arn:aws:cloudwatch:*:619759452242:alarm:emotion-mlops-*"
+    },
+    {
+      "Sid": "ManageProjectCloudWatchDashboard",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteDashboards",
+        "cloudwatch:GetDashboard",
+        "cloudwatch:PutDashboard"
+      ],
+      "Resource": "arn:aws:cloudwatch::619759452242:dashboard/emotion-mlops-*"
+    },
+    {
+      "Sid": "ReadCloudWatchMetadata",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:ListDashboards",
+        "cloudwatch:ListMetrics"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ManageProjectAlertTopics",
+      "Effect": "Allow",
+      "Action": [
+        "sns:CreateTopic",
+        "sns:DeleteTopic",
+        "sns:GetSubscriptionAttributes",
+        "sns:GetTopicAttributes",
+        "sns:ListSubscriptionsByTopic",
+        "sns:SetTopicAttributes",
+        "sns:Subscribe",
+        "sns:TagResource",
+        "sns:Unsubscribe",
+        "sns:UntagResource"
+      ],
+      "Resource": [
+        "arn:aws:sns:us-east-1:619759452242:emotion-mlops-*",
+        "arn:aws:sns:us-east-2:619759452242:emotion-mlops-*"
+      ]
+    },
+    {
+      "Sid": "ListAlertTopics",
+      "Effect": "Allow",
+      "Action": [
+        "sns:ListSubscriptions",
+        "sns:ListTopics"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
