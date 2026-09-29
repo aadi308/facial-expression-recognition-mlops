@@ -2,7 +2,7 @@
 
 ## Recommended version
 
-**Facial Expression Recognition MLOps POC** | Python, TensorFlow, FastAPI,
+**Facial Expression Recognition — End-to-End MLOps POC** | Python, TensorFlow, FastAPI,
 Docker, Terraform, AWS EKS
 
 - Built a reproducible CNN training and evaluation workflow for CK+, using
@@ -19,7 +19,7 @@ Docker, Terraform, AWS EKS
 
 ## Short version
 
-**Facial Expression Recognition MLOps POC** | Python, TensorFlow, FastAPI,
+**Facial Expression Recognition — End-to-End MLOps POC** | Python, TensorFlow, FastAPI,
 Docker, Terraform, AWS
 
 - Took a CNN from notebook training to a tested FastAPI service running on EKS,
