@@ -1,6 +1,6 @@
 FROM python:3.11-slim-trixie@sha256:9534e5a8e315485d4061ed659af0fd78a284c015f9b73661b41d6bab25604534
 
-LABEL org.opencontainers.image.title="Facial Expression Recognition API" \
+LABEL org.opencontainers.image.title="Facial Expression Recognition MLOps API" \
       org.opencontainers.image.description="FastAPI inference service for the CK+ CNN model"
 
 ENV PYTHONDONTWRITEBYTECODE=1 \

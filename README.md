@@ -1,4 +1,4 @@
-# Facial Expression Recognition — MLOps POC
+# Facial Expression Recognition — End-to-End MLOps POC
 
 This project takes a facial-expression CNN from a notebook to a deployable,
 observable inference service. It uses CK+ for training, FastAPI for serving,
@@ -35,8 +35,8 @@ stored in Git, so place the exported model at
 the training command below if you have the CK+ archive.
 
 ```bash
-git clone https://github.com/aadi308/real_time_facial_emotion_recognition.git
-cd real_time_facial_emotion_recognition
+git clone https://github.com/aadi308/facial-expression-recognition-mlops.git
+cd facial-expression-recognition-mlops
 
 python3 -m venv .venv
 source .venv/bin/activate
